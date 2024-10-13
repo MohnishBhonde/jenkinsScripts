@@ -1,13 +1,31 @@
-node {
-  // Start Stages
-  stage('Clone') {
-      // Clones the repository from the current branch name
-      echo 'Make the output directory'
-      sh 'mkdir -p build'
+def repoFile = 'repos.txt' // Path to the file containing repository URLs and local paths
 
-      echo 'Cloning files from (branch: "' + branchName + '" )'
-      dir('build') {
-          git branch: branchName, credentialsId: 	gitCredentials, url: repoUrl
-      }     
-  }       
+// Read the repositories from the file
+def repositories = []
+new File(repoFile).eachLine { line ->
+    def (url, dir) = line.split(',')
+    repositories << [url: url.trim(), dir: dir.trim()]
+}
+
+// Loop through each repository
+repositories.each { repo ->
+    def repoUrl = repo.url
+    def localDir = repo.dir
+
+    // Check if the directory exists
+    def repoExists = new File(localDir).exists()
+
+    if (repoExists) {
+        println "Repository exists at ${localDir}. Performing a git pull..."
+        // Execute git pull
+        def processPull = "git -C ${localDir} pull".execute()
+        processPull.waitFor()
+        println processPull.text
+    } else {
+        println "Repository does not exist at ${localDir}. Cloning from ${repoUrl}..."
+        // Execute git clone
+        def processClone = "git clone ${repoUrl} ${localDir}".execute()
+        processClone.waitFor()
+        println processClone.text
+    }
 }
