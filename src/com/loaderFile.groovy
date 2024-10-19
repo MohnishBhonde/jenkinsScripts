@@ -34,19 +34,19 @@ def call() {
             steps {
                 
               dir('/var/lib/jenkins'){
-                  if (repoExists){
+                 // if (repoExists){
                       // Performing git pull
-                      def processPull = "git -C ${localDir} pull".execute()
-                      processPull.waitFor()
-                      println processPull.text
-                  }
-                  else{
+                   //   def processPull = "git -C ${localDir} pull".execute()
+                     // processPull.waitFor()
+                     // println processPull.text
+                  //}
+                  //else{
                   //performing git clone
-                      def processClone = "git clone ${repoUrl} ${localDir}".execute()
-                      processClone.waitFor()
-                      println processClone.text
-                  }
-               // sh "git pull https://github.com/MohnishBhonde/SNSImplemen"
+                    //  def processClone = "git clone ${repoUrl} ${localDir}".execute()
+                     // processClone.waitFor()
+                      //println processClone.text
+                  //}
+                sh "git clone https://github.com/MohnishBhonde/SNSImplemen"
                 
                
                 
