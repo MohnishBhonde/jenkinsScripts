@@ -33,7 +33,7 @@ def call() {
         stage("Build") {
             steps {
                 
-              dir('/var/lib/jenkins'){
+              dir('/var/lib/jenkins/workspace/test'){
                  // if (repoExists){
                       // Performing git pull
                    //   def processPull = "git -C ${localDir} pull".execute()
@@ -56,7 +56,7 @@ def call() {
          }
         stage("mvn install"){
             steps{
-                 dir('/var/lib/jenkins/workspace/shared_jfrog_m/SNSImplemen'){
+                 dir('/var/lib/jenkins/workspace/test'){
                   sh "mvn -version"
                   sh "mvn clean install"
                  }
@@ -65,7 +65,7 @@ def call() {
         
             stage("mvn package"){
                 steps{
-                    dir('/var/lib/jenkins/workspace/shared_jfrog_m/SNSImplemen'){
+                    dir('/var/lib/jenkins/workspace/test'){
                     sh "mvn package"
                     }
                 }
